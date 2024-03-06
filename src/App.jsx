@@ -1,14 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import './styles.css'
 import { NewTodoForm } from './NewTodoForm';
+import { TodoList } from './TodoList';
 
 export default function App(){
 
   const [todos, setTodos] = useState([]);
-
-  // useEffect(() => {
-  //   console.log(todos);
-  // },[todos]);
 
   function addTodo(title){
     setTodos(currentTodos => {
@@ -22,7 +19,6 @@ export default function App(){
         ]
     })
   }
-
   function toggleTodo(id){
     setTodos(currentTodos => {
       return currentTodos.map(todo => {
@@ -42,23 +38,8 @@ export default function App(){
     <>
       <NewTodoForm onSubmit={addTodo}/>
       <h1>Todo List</h1>
-
-      <ul className='list'>
-        {/* short circuiting in javaScript */}
-        {todos.length === 0 && 'No todos'}
-        {todos.map(todo => {
-          return (
-            <li key={todo.id}>
-              <label>
-                <input type="checkbox" checked={todo.completed} 
-                onChange={e => toggleTodo(todo.id)}/>
-                {todo.title}
-              </label>
-              <button onClick={()=>deleteTodo(todo.id)} className='btn btn-danger'>Delete</button>
-            </li>
-          )
-        })}
-      </ul>
+      <TodoList onToggle={toggleTodo} 
+        onDelete={deleteTodo} todos={todos}/>
     </>
   )
 }
