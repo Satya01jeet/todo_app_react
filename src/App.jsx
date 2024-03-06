@@ -1,26 +1,28 @@
 import { useEffect, useState } from 'react'
 import './styles.css'
+import { NewTodoForm } from './NewTodoForm';
 
 export default function App(){
-  const [newItem, setNewItem] = useState("");
+
   const [todos, setTodos] = useState([]);
-  useEffect(() => {
-    console.log(todos);
-  },[todos]);
-  function handleSubmit(e){
-    e.preventDefault();
+
+  // useEffect(() => {
+  //   console.log(todos);
+  // },[todos]);
+
+  function addTodo(title){
     setTodos(currentTodos => {
-      return [
+        return [
         ...currentTodos,
         {
-          id: crypto.randomUUID(),
-          title: newItem,
-          completed: false
+            id: crypto.randomUUID(),
+            title: title,
+            completed: false
         },
-      ]
+        ]
     })
-    setNewItem("");
   }
+
   function toggleTodo(id){
     setTodos(currentTodos => {
       return currentTodos.map(todo => {
@@ -38,18 +40,9 @@ export default function App(){
   }
   return (
     <>
-      <form onSubmit={handleSubmit}
-       className="new-item-form">
-        <div className="form-row">
-          <label htmlFor='item'>Add New Task</label>
-          <input 
-          value={newItem}
-          onChange={e => setNewItem(e.target.value)}
-          type="text" name="" id="item" />
-        </div>
-        <button className='btn'>Add</button>
-      </form>
+      <NewTodoForm onSubmit={addTodo}/>
       <h1>Todo List</h1>
+
       <ul className='list'>
         {/* short circuiting in javaScript */}
         {todos.length === 0 && 'No todos'}
